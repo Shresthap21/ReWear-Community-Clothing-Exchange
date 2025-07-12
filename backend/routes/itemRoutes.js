@@ -5,15 +5,14 @@ const {
   createItem,
   getAvailableItems,
   getItemById,
-  updateItem
+  updateItem,
+  getMyItems
 } = require("../controllers/itemController");
 
 router.post("/", protect, createItem);
-
 router.get("/", protect, getAvailableItems);
-
 router.get("/:id", protect, getItemById);
-
 router.patch("/:id", protect, updateItem);
+router.get("/mine", protect, getMyItems);
 
 module.exports = router;
