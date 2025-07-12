@@ -10,8 +10,8 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
-// app.use('/api/swaps', swapRoutes);
-// app.use('/api/admin', adminRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/swaps', swapRoutes);
 
 app.get('/', (req, res) => res.send('ReWear API Running'));
 

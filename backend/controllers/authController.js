@@ -2,7 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Utility to generate JWT
+
 const generateToken = (user) => {
   return jwt.sign(
     { _id: user._id, email: user.email, role: user.role },
@@ -11,13 +11,24 @@ const generateToken = (user) => {
   );
 };
 
-// POST /auth/signup
+
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+      });
     }
 
     const existingUser = await User.findOne({ email });
@@ -35,6 +46,7 @@ const signup = async (req, res) => {
     });
 
     const token = generateToken(newUser);
+
     res.status(201).json({
       token,
       user: {
@@ -51,7 +63,7 @@ const signup = async (req, res) => {
   }
 };
 
-// POST /auth/login
+
 const login = async (req, res) => {
   try {
     console.log(req.body);
