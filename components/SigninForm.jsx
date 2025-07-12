@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axiosPublic from "@/lib/axiosPublic";
@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const SigninForm = () => {
   const router = useRouter();
-  const [signInDetail, setSignInDetail] = useState({ emailID: "", password: "" });
+  const [signInDetail, setSignInDetail] = useState({ email: "", password: "" });
   const [signInErr, setSignInErr] = useState("");
 
   const handleInputChange = (e) => {
@@ -16,13 +16,13 @@ const SigninForm = () => {
   };
 
   const handleLogin = async () => {
-    if (!signInDetail.emailID || !signInDetail.password) {
+    if (!signInDetail.email || !signInDetail.password) {
       toast.error("Please fill all fields");
       return;
     }
 
     try {
-      const promise = axiosPublic.post("/login", signInDetail);
+      const promise = axiosPublic.post("/auth/login", signInDetail);
       const res = await promise;
 
       toast.promise(promise, {
@@ -33,13 +33,19 @@ const SigninForm = () => {
 
       if (res.status === 200) {
         localStorage.setItem("access", res.data.token);
-        localStorage.setItem("refresh", res.data.refresh_token);
-        router.push("/dashboard");
+        router.push("/home");
       }
     } catch (error) {
       setSignInErr(error?.response?.data?.msg || "Login failed");
     }
   };
+
+  useEffect(() => {
+   if(localStorage.getItem("access")) {
+      router.push("/home");
+    }
+  }, [])
+  
 
   return (
     <div className="space-y-6">
@@ -47,9 +53,9 @@ const SigninForm = () => {
 
       <input
         type="email"
-        name="emailID"
+        name="email"
         placeholder="Email"
-        value={signInDetail.emailID}
+        value={signInDetail.email}
         onChange={handleInputChange}
         className="w-full border rounded p-2 bg-white text-black"
       />

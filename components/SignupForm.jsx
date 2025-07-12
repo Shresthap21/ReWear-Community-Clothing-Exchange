@@ -10,7 +10,7 @@ const SignupForm = ({setIsSignUp}) => {
   const router = useRouter();
   const [signUpDetail, setSignUpDetail] = useState({
     name: "",
-    emailID: "",
+    email: "",
     password: "",
   });
 
@@ -54,17 +54,17 @@ const SignupForm = ({setIsSignUp}) => {
   }
 
   const handleSignUp = async () => {
-    if (!signUpDetail.name || !signUpDetail.emailID || !signUpDetail.password) {
+    if (!signUpDetail.name || !signUpDetail.email || !signUpDetail.password) {
       toast.error("All fields required");
       return;
     }
 
     try {
-      const res = await axiosPublic.post("/signup", signUpDetail);
-      if (res.status === 200) {
-        toast.success(res.data.msg);
-        setIsSignUp(false);
-        // router.push("/auth/signin");
+      const res = await axiosPublic.post("/auth/signup", signUpDetail);
+      if (res.status === 201) {
+        toast.success("Account created successfully!");
+        localStorage.setItem("access", res.data.token);
+        router.push("/home");
       }
     } catch (error) {
       setSignUpErr((prev) => ({
@@ -74,6 +74,11 @@ const SignupForm = ({setIsSignUp}) => {
     }
   };
 
+    useEffect(() => {
+     if(localStorage.getItem("access")) {
+        router.push("/home");
+      }
+    }, [])
   return (
     <div className="space-y-6">
       <h2 className="text-center text-black text-2xl font-semibold">Create Account</h2>
@@ -89,9 +94,9 @@ const SignupForm = ({setIsSignUp}) => {
 
       <input
         type="email"
-        name="emailID"
+        name="email"
         placeholder="Email"
-        value={signUpDetail.emailID}
+        value={signUpDetail.email}
         onChange={handleInputChange}
         className="w-full border rounded p-2 bg-white text-black"
       />
