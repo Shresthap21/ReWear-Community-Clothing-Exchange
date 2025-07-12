@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axiosPublic from "@/lib/axiosPublic";
+import Link from "next/link";
 
 const SigninForm = () => {
   const router = useRouter();
@@ -19,14 +20,17 @@ const SigninForm = () => {
       toast.error("Please fill all fields");
       return;
     }
+
     try {
       const promise = axiosPublic.post("/login", signInDetail);
       const res = await promise;
+
       toast.promise(promise, {
         loading: "Logging in...",
         success: "Logged in!",
         error: "Login failed",
       });
+
       if (res.status === 200) {
         localStorage.setItem("access", res.data.token);
         localStorage.setItem("refresh", res.data.refresh_token);
@@ -65,12 +69,7 @@ const SigninForm = () => {
         Log In
       </button>
 
-      <p className="text-sm text-center">
-        Don't have an account?{" "}
-        <a href="/auth/signup" className="text-black underline">
-          Sign Up
-        </a>
-      </p>
+      
     </div>
   );
 };

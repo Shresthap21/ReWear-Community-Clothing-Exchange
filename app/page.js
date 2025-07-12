@@ -4,35 +4,28 @@ import { useState } from "react";
 import SigninForm from "@/components/SigninForm";
 import SignupForm from "@/components/SignupForm";
 
-export default function HomePage() {
+export default function Page() {
   const [isSignUp, setIsSignUp] = useState(false);
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-md space-y-6">
-        {isSignUp ? <SignupForm /> : <SigninForm />}
-
-        <div className="text-sm text-center">
+    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+        {isSignUp ? <SignupForm setIsSignUp={setIsSignUp} /> : <SigninForm />}
+        <div className="mt-4 text-center text-sm">
           {isSignUp ? (
-            <p>
+            <span className="text-sm text-black text-center">
               Already have an account?{" "}
-              <button
-                onClick={() => setIsSignUp(false)}
-                className="text-blue-600 underline"
-              >
+              <button onClick={() => setIsSignUp(false)} className="text-black underline">
                 Log in
               </button>
-            </p>
+            </span>
           ) : (
-            <p>
-              Don&apos;t have an account?{" "}
-              <button
-                onClick={() => setIsSignUp(true)}
-                className="text-blue-600 underline"
-              >
+            <span className="text-sm text-black text-center">
+              Don't have an account?{" "}
+              <button onClick={() => setIsSignUp(true)} className="text-black underline">
                 Sign up
               </button>
-            </p>
+            </span>
           )}
         </div>
       </div>
