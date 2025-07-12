@@ -16,12 +16,24 @@
   }
 }
 
+@font-face {
+  font-family: "BeatriceDeck";
+  src: url("/fonts/BeatriceHeadlineTRIAL-Regular-BF64829e8c11cf2.otf") format("opentype");
+  /* font-weight: 400; */
+  /* font-style: normal; */
+}
+
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+  /* color: rgb(var(--foreground-rgb)); */
+  /* background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
+
+    background-color: #D9D9D9;
+    font-family: "BeatriceDeck", sans-serif;
+
 }
