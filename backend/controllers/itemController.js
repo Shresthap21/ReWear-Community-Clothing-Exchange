@@ -125,9 +125,24 @@ const updateItem = async (req, res) => {
   }
 };
 
+const getMyItems = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const items = await Item.find({ uploaderId: userId }).sort({
+      createdAt: -1,
+    });
+    res.json(items);
+  } catch (err) {
+    console.error("Get my items error:", err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   createItem,
   getAvailableItems,
   getItemById,
   updateItem,
+  getMyItems,
 };
