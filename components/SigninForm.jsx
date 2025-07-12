@@ -33,7 +33,15 @@ const SigninForm = () => {
 
       if (res.status === 200) {
         localStorage.setItem("access", res.data.token);
-        router.push("/home");
+        if(res.data.user.role === "admin") {
+          localStorage.setItem("isAdmin", true);
+          router.push("/admin");
+
+        }
+        else {
+          localStorage.setItem("isAdmin", false);
+          router.push("/home");
+        }
       }
     } catch (error) {
       setSignInErr(error?.response?.data?.msg || "Login failed");

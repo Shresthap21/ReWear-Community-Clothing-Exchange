@@ -2,7 +2,7 @@ const Item = require("../models/Item");
 
 const getPendingItems = async (req, res) => {
   try {
-    const items = await Item.find({ status: "pending" }).populate(
+    const items = await Item.find().populate(
       "uploaderId",
       "name email"
     );
